@@ -29,19 +29,23 @@
                   <span class="now">￥{{food.price}}</span>
                   <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                 </div>
+                <div class="cartcontrol-wrapper">
+                  <cartControl :food="food"></cartControl>
+                </div>
               </div>
             </li>
           </ul>
         </li>
       </ul>
     </div>
-    <shortcart></shortcart>
+    <shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
   </div>
 </template>
 
 <script>
   import BScroll from 'better-scroll'
   import shopcart from '../shopcart/shopcart.vue'
+  import cartControl from '../cartControl/cartControl.vue'
   const ERR_OK = 0
   export default {
     name: 'goods',
@@ -100,7 +104,8 @@
           click: true
         })
         this.foodsScroll = new BScroll(foodsWrapper, {
-          probeType: 3
+          probeType: 3,
+          click: true
         })
         this.foodsScroll.on('scroll', (pos) => {
           this.scrollY = Math.abs(Math.round(pos.y))
@@ -119,7 +124,8 @@
       }
     },
     components: {
-      shopcart
+      shopcart,
+      cartControl
     }
   }
 </script>
@@ -192,6 +198,7 @@
   }
   .goods > .foods-wrapper .food-item > .content{
     flex: 1;
+    position: relative;
   }
   .goods > .foods-wrapper .food-item > .content > .name{
     margin: 2px 0 8px 0;
@@ -218,6 +225,7 @@
   .goods > .foods-wrapper .food-item > .content > .price{
     font-weight: 700;
     line-height: 24px;
+    display: inline-block;
   }
   .goods > .foods-wrapper .food-item > .content > .price > .now{
     margin-right: 8px;
@@ -228,6 +236,11 @@
     text-decoration: line-through;
     font-size: 10px;
     color: rgb(147,153,159);
+  }
+  .goods > .foods-wrapper .food-item > .content > .cartcontrol-wrapper {
+    position: absolute;
+    right: 0;
+    bottom: -1px;
   }
   
 </style>
